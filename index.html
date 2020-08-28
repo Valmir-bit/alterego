@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<link rel="icon" href="images/image2.jpg" type="image/gif" sizes="20x20">
+<title>mă-ta</title>
+
+<script type="text/javascript" src="jquery-1.10.1.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css" href="/css/result-light.css">
+    <script>
+      const customConsole = (w) => {
+        const pushToConsole = (payload, type) => {
+          w.parent.postMessage({
+            console: {
+              payload: stringify(payload),
+              type:    type
+            }
+          }, "*")
+        }
+
+        w.onerror = (message, url, line, column) => {
+          // the line needs to correspond with the editor panel
+          // unfortunately this number needs to be altered every time this view is changed
+          line = line - 70
+          if (line < 0){
+            pushToConsole(message, "error")
+          } else {
+            pushToConsole(`[${line}:${column}] ${message}`, "error")
+          }
+        }
+
+        let console = (function(systemConsole){
+          return {
+            log: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "log")
+              systemConsole.log.apply(this, args)
+            },
+            info: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "info")
+              systemConsole.info.apply(this, args)
+            },
+            warn: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "warn")
+              systemConsole.warn.apply(this, args)
+            },
+            error: function(){
+              let args = Array.from(arguments)
+              pushToConsole(args, "error")
+              systemConsole.error.apply(this, args)
+            },
+            system: function(arg){
+              pushToConsole(arg, "system")
+            }
+          }
+        }(window.console))
+
+        window.console = console
+
+        console.system("Running fiddle")
+      }
+
+      if (window.parent){
+        customConsole(window)
+      }
+    </script>
+</head>
+<body id="main">
+  <div class="main_box">
+	 <img id="logo" src="images/image1.png" width="15%" height="auto" alt="logo">
+	  <a class="category" href="#desert">Servicii</a>
+	  <a class="category" href="#desert">Parteneri</a>
+	  <a class="category" href="#desert">Salon</a>
+	  <a class="category" href="#desert">Blog</a>
+	  <a class="category" href="#desert">Recenzii</a>
+	 <p id="contact"> +37312345678 <br> loren_ipsum@gmail.com</p>
+	 <p id="title">LA ALTER EGO ESTHETIC ROOM, <br> TENUL TĂU E CARTEA <br> NOASTRA DE VIZITĂ</p>
+  </div>  
+ <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>	
+	  <div class="hscroll">
+    <div class="thumbs-block">
+    <div class="thumbs">
+    <a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Around_the_boath_120x120_cm.jpg" alt="picture 1" width="240" height="240" /></a>
+	<img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 2" width="240" height="240">
+	<img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 3" width="240" height="240">
+	<a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 4" width="240" height="240" /></a>
+	<a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 5" width="240" height="240"/></a>
+	<a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 6" width="240" height="240"/></a>
+	<a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 7" width="240" height="240" /></a>
+	<a class="thumb"></a>
+	<a class="thumb"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/1Mcolors.png" alt="picture 9" width="240" height="240" /></a>
+
+    </div>
+</div>
+
+
+  <script type="text/javascript">//<![CDATA[
+      var $bl    = $(".thumbs-block"),
+        $th    = $(".thumbs"),
+        blW    = $bl.outerWidth(),
+        blSW   = $bl[0].scrollWidth,
+        wDiff  = (blSW/blW)-1,  // widths difference ratio
+        mPadd  = 60,  // Mousemove Padding
+        damp   = 20,  // Mousemove response softness
+        mX     = 0,   // Real mouse position
+        mX2    = 0,   // Modified mouse position
+        posX   = 0,
+        mmAA   = blW-(mPadd*2), // The mousemove available area
+        mmAAr  = (blW/mmAA);    // get available mousemove fidderence ratio
+
+	$bl.mousemove(function(e) {
+        mX = e.pageX - this.offsetLeft;
+        mX2 = Math.min( Math.max(0, mX-mPadd), mmAA ) * mmAAr;
+	});
+
+	setInterval(function(){
+		posX += (mX2 - posX) / damp; // zeno's paradox equation "catching delay"	
+		$th.css({marginLeft: -posX*wDiff });
+	}, 10);
+
+
+  //]]>
+	</script>
+
+  <script>
+    // tell the embed parent frame the height of the content
+    if (window.parent && window.parent.parent){
+      window.parent.parent.postMessage(["resultsFrame", {
+        height: document.body.getBoundingClientRect().height,
+        slug: "c5fmw8t7"
+      }], "*")
+    }
+
+    // always overwrite window.name, in case users try to set it manually
+    window.name = "result"
+  </script>
+
+    <script>
+      let allLines = []
+
+      window.addEventListener("message", (message) => {
+        if (message.data.console){
+          let insert = document.querySelector("#insert")
+          allLines.push(message.data.console.payload)
+          insert.innerHTML = allLines.join(";\r")
+
+          let result = eval.call(null, message.data.console.payload)
+          if (result !== undefined){
+            console.log(result)
+          }
+        }
+      })
+    </script>
+</div>
+  </div>
+	<p id="desert">desert</p>
+	<p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></p>
+</body>
+</html>
